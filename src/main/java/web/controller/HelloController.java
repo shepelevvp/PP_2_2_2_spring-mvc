@@ -12,7 +12,7 @@ import java.util.List;
 public class HelloController {
 
 
-	@GetMapping("/")
+	@RequestMapping("/")
 	public String printWelcome(ModelMap model) {
 		List<String> messages = new ArrayList<>();
 		messages.add("Hello!");
