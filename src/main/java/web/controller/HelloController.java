@@ -12,7 +12,7 @@ import java.util.List;
 public class HelloController {
 
 
-	@RequestMapping("/")
+	@GetMapping("/hello")
 	public String printWelcome(ModelMap model) {
 		List<String> messages = new ArrayList<>();
 		messages.add("Hello!");
@@ -21,5 +21,9 @@ public class HelloController {
 		model.addAttribute("messages", messages);
 		return "index";
 	}
+
+
+
+
 	
 }

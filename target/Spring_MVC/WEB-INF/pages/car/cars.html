@@ -1,0 +1,72 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:form="http://www.w3.org/1999/html">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List CAR</title>
+</head>
+<body>
+<h2>Get car</h2>
+
+<form th:action="@{/car/cars}" method="get" th:object="${car}">
+    Brand: <input type="text" th:field="*{brand}" />
+    <br><br>
+    Series: <input type="text" th:field="*{series}" />
+    <br><br>
+    Country: <input type="text" th:field="*{country}" />
+    <br><br>
+    <input type="submit" value="OK">
+</form>
+
+<p th:text="${showCarMSG}" />
+
+
+<!--    <form th:action="@{/car/cars}" method="get">-->
+<!--        Brand: <input type="text" name="carBrand"-->
+<!--            placeholder="Write car Brand"/>-->
+<!--        <br><br>-->
+<!--        Series: <input type="text" name="carSeries"-->
+<!--               placeholder="Write car Series"/>-->
+<!--        <br><br>-->
+<!--        Country: <input type="text" name="carCountry"-->
+<!--               placeholder="Write car Country"/>-->
+<!--        <br><br>-->
+<!--    <input type="submit"/>-->
+<!--    </form>-->
+<!--<p th:text="${showCarMSG}"></p>-->
+<div>
+    <h2>CAR LIST</h2>
+    <table th:border="1">
+        <tr>
+            <th>Brand</th>
+            <th>Series</th>
+            <th>Country</th>
+        </tr>
+        <tr th:each="car : ${carList}">
+            <td th:utext="${car.brand}"></td>
+            <td th:utext="${car.series}"></td>
+            <td th:utext="${car.country}"></td>
+        </tr>
+    </table>
+</div>
+<br><br>
+<h2>How many cars do you want to see on the CAR LIST?</h2>
+
+<form th:action="@{/car/cars}" method="get">
+    <input type="number" name="count"
+           placeholder="How many cars show?"/>
+
+    <br>
+    <br>
+
+    <input type="submit"/>
+
+</form>
+
+</body>
+</html>
