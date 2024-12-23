@@ -5,5 +5,8 @@ import web.model.Car;
 import java.util.List;
 
 public interface CarService {
-    List<Car> selectedSomeCars(List<Car> carList, Integer count);
+
+    void save (Car car);
+    List<Car> getCarList();
+    List<Car> selectedSomeCars(Integer count);
 }

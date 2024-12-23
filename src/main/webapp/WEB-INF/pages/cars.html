@@ -13,17 +13,22 @@
 <body>
 <h2>Get car</h2>
 
-<form th:action="@{/car/cars}" method="get" th:object="${car}">
-    Brand: <input type="text" th:field="*{brand}" />
-    <br><br>
-    Series: <input type="text" th:field="*{series}" />
-    <br><br>
-    Country: <input type="text" th:field="*{country}" />
-    <br><br>
-    <input type="submit" value="OK">
+<form th:action="@{/cars}" method="POST" th:object="${car}">
+    <div>
+        Brand: <input type="text" th:field="*{brand}" id="brand" placeholder="Write car Brand" />
+        <div style="color:red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" />
+        <br><br>
+        Series: <input type="text" th:field="*{series}" id="series" placeholder="Write car Series" />
+        <div style="color:red" th:if="${#fields.hasErrors('series')}" th:errors="*{series}" />
+        <br><br>
+        Country: <input type="text" th:field="*{country}" id="country" placeholder="Write car Country" />
+        <div style="color:red" th:if="${#fields.hasErrors('country')}" th:errors="*{country}" />
+        <br><br>
+        <input type="submit" value="OK">
+    </div>
 </form>
 
-<p th:text="${showCarMSG}" />
+<!--<p th:text="${showCarMSG}" />-->
 
 
 <!--    <form th:action="@{/car/cars}" method="get">-->
@@ -47,17 +52,17 @@
             <th>Series</th>
             <th>Country</th>
         </tr>
-        <tr th:each="car : ${carList}">
-            <td th:utext="${car.brand}"></td>
-            <td th:utext="${car.series}"></td>
-            <td th:utext="${car.country}"></td>
+        <tr th:each="car : ${cars}">
+            <td th:utext="${car.getBrand()}"></td>
+            <td th:utext="${car.getSeries()}"></td>
+            <td th:utext="${car.getCountry()}"></td>
         </tr>
     </table>
 </div>
 <br><br>
 <h2>How many cars do you want to see on the CAR LIST?</h2>
 
-<form th:action="@{/car/cars}" method="get">
+<form th:action="@{/cars}" method="get">
     <input type="number" name="count"
            placeholder="How many cars show?"/>
 

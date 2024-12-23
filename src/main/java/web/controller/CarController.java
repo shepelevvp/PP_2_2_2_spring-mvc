@@ -1,45 +1,45 @@
 package web.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import web.model.Car;
 import web.service.CarService;
-import web.service.CarServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
-@RequestMapping("/car")
+@RequestMapping("/cars")
 public class CarController {
 
-	List<Car> carList = new ArrayList<>();
-	CarService carService = new CarServiceImpl();
+	private final CarService carService;
 
-	@GetMapping("/cars")
-	public String getCar(Model model,
-						 @ModelAttribute("car") Car car,
-						 @RequestParam(value = "count", required = false) String countCars) {
-		if (car.getBrand() != null && !car.getBrand().isEmpty() &&
-				car.getSeries() != null && !car.getSeries().isEmpty() &&
-				car.getCountry() != null && !car.getCountry().isEmpty()) {
-			carList.add(car);
-			model.addAttribute("showCarMSG", "The car added to the CAR LIST: " + car);
-		}
-		model.addAttribute("car", new Car());
+	@Autowired
+	public CarController(CarService carService) {
+		this.carService = carService;
+	}
 
-		if (countCars != null && countCars != "") {
-			Integer count = Integer.parseInt(countCars);
-			List<Car> carShowList = carService.selectedSomeCars(carList, count);
-			model.addAttribute("carList", carShowList);
+	@GetMapping()
+	public String getCar(@ModelAttribute("car") Car car,
+						 @RequestParam(value = "count", required = false) Integer countCars,
+						 Model model) {
+
+		if (countCars != null) {
+			model.addAttribute("cars", carService.selectedSomeCars(countCars));
 		} else {
-			model.addAttribute("carList", carList);
+			model.addAttribute("cars", carService.getCarList());
 		}
+		return "cars";
+	}
 
-		return "car/cars";
+	@PostMapping()
+	public String create(@ModelAttribute("car") @Valid Car car, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "cars";
+		}
+		carService.save(car);
+		return "redirect:/cars";
 	}
 }
